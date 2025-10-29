@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WAMVC.Data;
+using WAMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ArtesaniasDBContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// ============================================
+// CONFIGURACIÓN DE AUTENTICACIÓN
+// ============================================
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -20,6 +24,33 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
         options.SlidingExpiration = true;
     });
+
+// ============================================
+// CONFIGURACIÓN DE AUTORIZACIÓN (POLÍTICAS)
+// ============================================
+builder.Services.AddAuthorization(options =>
+{
+    // Política: Solo Administradores
+    options.AddPolicy(Policies.RequiereAdministrador, policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole(Roles.Administrador);
+    });
+
+    // Política: Solo Usuarios normales
+    options.AddPolicy(Policies.RequiereUsuario, policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole(Roles.Usuario);
+    });
+
+    // Política: Cualquier usuario autenticado (Admin o Usuario)
+    options.AddPolicy(Policies.RequiereUsuarioAutenticado, policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole(Roles.Administrador, Roles.Usuario);
+    });
+});
 
 var app = builder.Build();
 

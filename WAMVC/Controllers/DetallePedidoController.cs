@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WAMVC.Models;
 
 namespace WAMVC.Controllers
 {
+    [Authorize(Policy = Policies.RequiereUsuarioAutenticado)]
     public class DetallePedidoController : Controller
     {
         private readonly ArtesaniasDBContext _context;
@@ -49,6 +51,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: DetallePedido/Create
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Create()
         {
             try
@@ -90,6 +93,7 @@ namespace WAMVC.Controllers
         // POST: DetallePedido/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Create([Bind("IdPedido,IdProducto,Cantidad")] DetallePedidoModel detallePedidoModel)
         {
             try
@@ -200,6 +204,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: DetallePedido/Edit/5
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -228,6 +233,7 @@ namespace WAMVC.Controllers
         // POST: DetallePedido/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,IdPedido,IdProducto,Cantidad,PrecioUnitario")] DetallePedidoModel detallePedidoModel)
         {
             if (id != detallePedidoModel.Id)
@@ -286,6 +292,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: DetallePedido/Delete/5
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -308,6 +315,7 @@ namespace WAMVC.Controllers
         // POST: DetallePedido/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var detallePedidoModel = await _context.DetallePedidos.FindAsync(id);

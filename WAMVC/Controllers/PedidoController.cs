@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WAMVC.Models;
 
 namespace WAMVC.Controllers
 {
+    [Authorize(Policy = Policies.RequiereUsuarioAutenticado)]
     public class PedidoController : Controller
     {
         private readonly ArtesaniasDBContext _context;
@@ -26,7 +28,8 @@ namespace WAMVC.Controllers
             return View(await artesaniasDBContext.ToListAsync());
         }
 
-        // Acción para crear datos de prueba
+        // Acción para crear datos de prueba - Solo Administradores
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> CrearDatosPrueba()
         {
             try
@@ -93,6 +96,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: Pedido/Create
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Create()
         {
             try
@@ -129,6 +133,7 @@ namespace WAMVC.Controllers
         // POST: Pedido/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Create([Bind("FechaPedido,IdCliente,Estado,MontoTotal")] PedidoModel pedidoModel)
         {
             try
@@ -143,13 +148,6 @@ namespace WAMVC.Controllers
                     }
                 }
 
-                // Log para depurar
-                System.Diagnostics.Debug.WriteLine($"ModelState.IsValid: {ModelState.IsValid}");
-                System.Diagnostics.Debug.WriteLine($"Cliente ID: {pedidoModel.IdCliente}");
-                System.Diagnostics.Debug.WriteLine($"Fecha: {pedidoModel.FechaPedido}");
-                System.Diagnostics.Debug.WriteLine($"Estado: {pedidoModel.Estado}");
-                System.Diagnostics.Debug.WriteLine($"Monto: {pedidoModel.MontoTotal}");
-
                 if (ModelState.IsValid)
                 {
                     _context.Add(pedidoModel);
@@ -159,15 +157,6 @@ namespace WAMVC.Controllers
                 }
                 else
                 {
-                    // Log errores de validación
-                    foreach (var error in ModelState)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"Campo: {error.Key}");
-                        foreach (var errorMsg in error.Value.Errors)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"  Error: {errorMsg.ErrorMessage}");
-                        }
-                    }
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor revise los campos.";
                 }
             }
@@ -175,11 +164,6 @@ namespace WAMVC.Controllers
             {
                 ModelState.AddModelError("", "Error al crear el pedido: " + ex.Message);
                 TempData["ErrorMessage"] = "Error al crear el pedido: " + ex.Message;
-                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                }
             }
             
             // Si llegamos aquí, algo salió mal - recargar la vista
@@ -189,6 +173,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: Pedido/Edit/5
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -219,6 +204,7 @@ namespace WAMVC.Controllers
         // POST: Pedido/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FechaPedido,IdCliente,Estado,MontoTotal")] PedidoModel pedidoModel)
         {
             if (id != pedidoModel.Id)
@@ -262,6 +248,7 @@ namespace WAMVC.Controllers
         }
 
         // GET: Pedido/Delete/5
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -284,6 +271,7 @@ namespace WAMVC.Controllers
         // POST: Pedido/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = Policies.RequiereAdministrador)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             // Primero verificar si hay detalles de pedido relacionados
