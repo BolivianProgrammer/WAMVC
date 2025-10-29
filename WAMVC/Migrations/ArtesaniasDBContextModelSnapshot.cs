@@ -166,6 +166,26 @@ namespace WAMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Activo = true,
+                            Email = "admin@artesanias.com",
+                            NombreCompleto = "Administrador del Sistema",
+                            Password = "Admin123!",
+                            Rol = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Activo = true,
+                            Email = "usuario@artesanias.com",
+                            NombreCompleto = "Usuario de Prueba",
+                            Password = "Usuario123!",
+                            Rol = "Usuario"
+                        });
                 });
 
             modelBuilder.Entity("WAMVC.Models.DetallePedidoModel", b =>

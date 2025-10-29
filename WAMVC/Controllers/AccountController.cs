@@ -46,9 +46,26 @@ namespace WAMVC.Controllers
                 return View();
             }
 
-            var verifyResult = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
-            var passwordMatches = verifyResult == PasswordVerificationResult.Success
-                                  || string.Equals(user.Password, password); // fallback si en la DB hay contraseñas en claro
+            // Verificar la contraseña (con soporte para texto plano y hash)
+            bool passwordMatches = false;
+            
+            // Primero intentar verificar si es un hash válido
+            try
+            {
+                var verifyResult = _passwordHasher.VerifyHashedPassword(user, user.Password, password);
+                passwordMatches = verifyResult == PasswordVerificationResult.Success;
+            }
+            catch (FormatException)
+            {
+                // Si falla la verificación del hash, probablemente es texto plano
+                // No hacer nada, continuaremos con la verificación de texto plano
+            }
+            
+            // Si no coincidió como hash, verificar como texto plano
+            if (!passwordMatches)
+            {
+                passwordMatches = string.Equals(user.Password, password);
+            }
 
             if (!passwordMatches)
             {

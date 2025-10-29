@@ -45,6 +45,35 @@ namespace WAMVC.Data
             modelBuilder.Entity<PedidoModel>()
                 .Property(p => p.MontoTotal)
                 .HasColumnType("decimal(18,2)");
+
+            // ============================================
+            // SEMBRAR DATOS INICIALES (SEED DATA)
+            // ============================================
+            
+            // NOTA: Contraseñas en TEXTO PLANO para facilitar desarrollo/testing
+            // El AccountController tiene un fallback que acepta texto plano (línea 49)
+            // En PRODUCCIÓN se recomienda usar contraseñas hasheadas
+            
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario
+                {
+                    Id = 1,
+                    Email = "admin@artesanias.com",
+                    Password = "Admin123!", // Texto plano
+                    NombreCompleto = "Administrador del Sistema",
+                    Rol = "Administrador",
+                    Activo = true
+                },
+                new Usuario
+                {
+                    Id = 2,
+                    Email = "usuario@artesanias.com",
+                    Password = "Usuario123!", // Texto plano
+                    NombreCompleto = "Usuario de Prueba",
+                    Rol = "Usuario",
+                    Activo = true
+                }
+            );
         }
     }
 }

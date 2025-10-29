@@ -1,41 +1,159 @@
-# Prerequisites
-*.d
+# ============================================
+# .NET / ASP.NET Core
+# ============================================
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
 
-# Precompiled Headers
-*.gch
-*.pch
+# Visual Studio cache/options
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Linker files
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# ============================================
+# GitHub Copilot
+# ============================================
+.CopilotSnapshots/
+CopilotSnapshots/
+**/.CopilotSnapshots/
+**/CopilotSnapshots/
+
+# ============================================
+# Entity Framework Core Migrations (opcional)
+# ============================================
+# Migrations/
+# Si quieres mantener las migraciones, comenta la línea anterior
+
+# ============================================
+# ASP.NET Scaffolding
+# ============================================
+ScaffoldingReadMe.txt
+
+# ============================================
+# Files built by Visual Studio
+# ============================================
+*_i.c
+*_p.c
+*_h.h
 *.ilk
-
-# Debugger Files
+*.meta
+*.obj
+*.iobj
+*.pch
 *.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# ============================================
+# NuGet Packages
+# ============================================
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
 
-# Fortran module files
-*.mod
-*.smod
+# ============================================
+# SQL Server files
+# ============================================
+*.mdf
+*.ldf
+*.ndf
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# ============================================
+# Others
+# ============================================
+*.cache
+*.publishsettings
+orleans.codegen.cs
 
-# Executables
-*.exe
-*.out
-*.app
+# ============================================
+# JetBrains Rider
+# ============================================
+.idea/
+*.sln.iml
 
-# debug information files
-*.dwo
+# ============================================
+# User secrets
+# ============================================
+secrets.json
+appsettings.Development.json
+
+# ============================================
+# Node.js (si usas npm/yarn)
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# macOS
+# ============================================
+.DS_Store
+
+# ============================================
+# Windows
+# ============================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
