@@ -13,9 +13,13 @@
 </div>
 
 <div class="form-buttons mb-4">
-    <a asp-action="Create" class="btn-form-primary">
-        <i class="bi bi-plus-circle"></i> Crear Nuevo
-    </a>
+    @* Botones solo para Administradores *@
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Create" class="btn-form-primary">
+            <i class="bi bi-plus-circle"></i> Crear Nuevo
+        </a>
+    }
     <a asp-controller="Pedido" asp-action="Index" class="btn-form-secondary">
         <i class="bi bi-cart3"></i> Lista de Pedidos
     </a>
@@ -40,10 +44,13 @@
     </div>
 }
 
-<div class="alert alert-info mb-4">
-    <i class="bi bi-info-circle me-2"></i>
-    <strong>Importante:</strong> Al modificar detalles de pedido, actualice el monto total del pedido.
-</div>
+@if (User.IsInRole("Administrador"))
+{
+    <div class="alert alert-info mb-4">
+        <i class="bi bi-info-circle me-2"></i>
+        <strong>Importante:</strong> Al modificar detalles de pedido, actualice el monto total del pedido.
+    </div>
+}
 
 @if (!Model.Any())
 {
@@ -76,15 +83,20 @@ else
                         <td>$@Html.DisplayFor(modelItem => item.PrecioUnitario)</td>
                         <td><strong>$@(item.Cantidad * item.PrecioUnitario)</strong></td>
                         <td class="table-actions">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-table btn-table-edit">
-                                <i class="bi bi-pencil"></i> Editar
-                            </a>
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-table btn-table-view">
                                 <i class="bi bi-eye"></i> Ver
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-table btn-table-delete">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </a>
+                            
+                            @* Botones solo para Administradores *@
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-table btn-table-edit">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-table btn-table-delete">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

@@ -12,11 +12,15 @@
     </div>
 </div>
 
-<div class="form-buttons mb-4">
-    <a asp-action="Create" class="btn-form-primary">
-        <i class="bi bi-plus-circle"></i> Crear Nuevo
-    </a>
-</div>
+@* Botón Crear solo visible para Administradores *@
+@if (User.IsInRole("Administrador"))
+{
+    <div class="form-buttons mb-4">
+        <a asp-action="Create" class="btn-form-primary">
+            <i class="bi bi-plus-circle"></i> Crear Nuevo
+        </a>
+    </div>
+}
 
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -53,15 +57,20 @@
                         @Html.DisplayFor(modelItem => item.Stock)
                     </td>
                     <td class="table-actions">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-table btn-table-edit">
-                            <i class="bi bi-pencil"></i> Editar
-                        </a>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-table btn-table-view">
                             <i class="bi bi-eye"></i> Ver
                         </a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-table btn-table-delete">
-                            <i class="bi bi-trash"></i> Eliminar
-                        </a>
+                        
+                        @* Botones Editar y Eliminar solo para Administradores *@
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-table btn-table-edit">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-table btn-table-delete">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        }
                     </td>
                 </tr>
             }
@@ -73,6 +82,11 @@
 {
     <div class="alert alert-info mt-4">
         <h5 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Sin Productos</h5>
-        <p>No hay productos registrados en el sistema. Puede crear un nuevo producto usando el botón "Crear Nuevo".</p>
+        <p>No hay productos registrados en el sistema. 
+        @if (User.IsInRole("Administrador"))
+        {
+            <text>Puede crear un nuevo producto usando el botón "Crear Nuevo".</text>
+        }
+        </p>
     </div>
 }
